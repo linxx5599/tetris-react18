@@ -4,6 +4,8 @@ export default class Block {
   block: blockType;
   garmeInstance: Garme;
   constructor() {
+    //方块类型
+    const blockTypes = ["L", "J", "Z", "S", "T", "O"];
     this.block = [
       [0, 1, 0, 0],
       [0, 1, 0, 0],

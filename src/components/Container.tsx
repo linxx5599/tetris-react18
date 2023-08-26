@@ -1,10 +1,8 @@
 import React from "react";
-import { CLASS_CELL, CLASS_BLOCK } from "@/utils/config";
+import { CLASS_CELL, CLASS_BLOCK, ROW, COL } from "@/utils/config";
 import Block from "@/share/Block";
 import { useEffect } from "react";
-//10 * 20 block
-const ROW = 20;
-const COL = 10;
+
 const Container: React.FC = () => {
   const block = new Block();
   useEffect(() => {
