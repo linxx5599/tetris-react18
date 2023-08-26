@@ -1,5 +1,5 @@
 import { blockType } from "@/types";
-type chunkType = Array<blockType>;
+type chunkType = blockType[];
 interface blockMapInterface {
   I: chunkType;
   L: chunkType;
@@ -13,7 +13,7 @@ interface blockMapInterface {
  * @description 方块的类型
  * @constant blockMap 为0的数据不渲染颜色否则渲染颜色
  */
-export const blockMap: blockMapInterface = {
+export const BLOCK_MAPS: blockMapInterface = {
   I: [
     [
       [0, 1, 0, 0],

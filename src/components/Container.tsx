@@ -1,27 +1,26 @@
 import React from "react";
-import { CLASS_CELL, CLASS_BLOCK, ROW, COL } from "@/utils/config";
-import Block from "@/share/Block";
 import { useEffect } from "react";
+import { CLASS_CELL, CLASS_BLOCK, ROW, COL } from "@/utils/config";
+import { garameRun } from "@/share/Garme";
 
 const Container: React.FC = () => {
-  const block = new Block();
   useEffect(() => {
-    block.render();
-  }, [])
+    garameRun();
+  }, []);
   return (
     <div className="tetris-box" style={{ width: `${40 * COL}px` }}>
-      {new Array(ROW).fill(1).map((_, i) => {
+      {new Array(ROW).fill(0).map((_, x) => {
         return (
           <div
-            className={`cell cell-${i} ${CLASS_CELL}-${i}`}
-            data-x={i}
-            key={i}
+            className={`cell cell-${x} ${CLASS_CELL}-${x}`}
+            data-x={x}
+            key={x}
           >
-            {new Array(COL).fill(1).map((__, y) => {
+            {new Array(COL).fill(0).map((__, y) => {
               return (
                 <div
-                  key={i + "" + y}
-                  data-x={i}
+                  key={x + "" + y}
+                  data-x={x}
                   data-y={y}
                   className={`block block-${y} ${CLASS_BLOCK}-${y}`}
                 ></div>
