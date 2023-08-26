@@ -2,13 +2,6 @@ import { CLASS_CELL, CLASS_BLOCK, ROW, COL } from "@/utils/config";
 import GameMap from "@/share/map";
 import Block from "@/share/Block";
 export default class Garme {
-  private static _garme: Garme;
-  static instance(): Garme {
-    if (this._garme === undefined) {
-      this._garme = new Garme();
-    }
-    return this._garme;
-  }
   row: number;
   col: number;
   constructor() {
@@ -52,13 +45,17 @@ export default class Garme {
 let timer;
 export function garameRun() {
   const garme = new Garme();
-  const block = new Block();
+  let block = new Block();
   const gameMap = new GameMap();
   timer = setInterval(() => {
     garme.clear();
-    block.render();
-    gameMap.render();
-    block.next();
-    console.log(666);
+    block.render(garme);
+    gameMap.render(garme);
+    const stop = block.next(gameMap);
+    //触碰到底部则重新渲染block & 存入到地图
+    if (stop) {
+      gameMap.renderMap(block);
+      block = new Block();
+    }
   }, 500);
 }
