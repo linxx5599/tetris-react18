@@ -1,18 +1,25 @@
 @import "./reset.less";
-.tetris-box {
-  margin: 5vh auto;
-  border-spacing: 0;
-  border: 1px solid #e8e8e8;
-  .cell {
-    display: flex;
-    .block {
-      flex: 1;
-      width: 40px;
-      height: 40px;
-      text-align: center;
-      border: 1px solid #e8e8e8;
-      &.show {
-        background: red;
+.warp {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .tetris-box {
+    border-spacing: 0;
+    border: 1px solid #e8e8e8;
+    background-color: #252525;
+    .cell {
+      display: flex;
+      .block {
+        flex: 1;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        border: 1px solid #e8e8e8;
+        &.show {
+          background: red;
+        }
       }
     }
   }
