@@ -12,11 +12,18 @@ export default class GameMap {
     //地图数据
     this.mapData = this.getMapData();
   }
+
+  getRow(num: number): number[] {
+    return new Array(this.col).fill(num);
+  }
+
   getMapData() {
     const data = [];
     for (let x = 0; x < this.row; x++) {
-      data.push(new Array(this.col).fill(0));
+      data.push(this.getRow(0));
     }
+    //添加一层数据 类型于蒙层
+    data.push(this.getRow(9));
     return data;
   }
 
@@ -24,7 +31,7 @@ export default class GameMap {
     for (let x = 0; x < 4; x++) {
       for (let y = 0; y < 4; y++) {
         if (Block.block[x][y] !== 0) {
-          this.mapData[x + Block.blockRow][y + Block.blocCol] =
+          this.mapData[x + Block.blockRow][y + Block.blockCol] =
             Block.block[x][y];
         }
       }
@@ -38,7 +45,7 @@ export default class GameMap {
   render(Garme: Garme) {
     for (let x = 0; x < this.row; x++) {
       for (let y = 0; y < this.col; y++) {
-        if (x === 19) {
+        if (y === 6 && x > 15) {
           this.updateMapData(x, y, 1);
         }
         if (this.mapData[x][y] !== 0) {
@@ -46,5 +53,20 @@ export default class GameMap {
         }
       }
     }
+  }
+
+  remove() {
+    for (let x = 0; x < this.row; x++) {
+      //未找到0则消除
+      if (!this.mapData[x].includes(0)) {
+        this.mapData.splice(x, 1);
+        this.mapData.unshift(this.getRow(0));
+      }
+    }
+  }
+
+  //GAME OVER
+  checkOver() {
+    return this.mapData[0].some((d) => d !== 0);
   }
 }

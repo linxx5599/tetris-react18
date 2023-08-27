@@ -8,6 +8,7 @@ export const ROW = 20;
 export const COL = 11;
 //方块所有类型
 export const BLOCK_MAP_TRYPES: Array<blockMapTypes> = [
+  "I",
   "L",
   "J",
   "Z",
