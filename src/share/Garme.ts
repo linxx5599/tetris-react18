@@ -73,18 +73,38 @@ function bindEvent(garmeMap: GarmeMap) {
   });
 }
 
-let timer: NodeJS.Timeout;
+let rAF = (fn: FrameRequestCallback): number =>
+  window.requestAnimationFrame
+    ? window.requestAnimationFrame(fn)
+    : setTimeout(fn, 16);
+let cAF = (timer: number) =>
+  window.cancelAnimationFrame
+    ? window.cancelAnimationFrame(timer)
+    : clearTimeout(timer);
+
 export function garameRun() {
+  let timer: NodeJS.Timeout;
+  let handeRaf: number;
+  let stop = false;
   const garme = new Garme();
   block = new Block();
   const gameMap = new GarmeMap();
   //绑定事件
   bindEvent(gameMap);
+  run();
+  function run() {
+    handeRaf = rAF(() => {
+      if (stop) {
+        handeRaf && cAF(handeRaf);
+      }
+      garme.clear();
+      block.render(garme);
+      gameMap.render(garme);
+      run();
+    });
+  }
   timer = setInterval(() => {
-    garme.clear();
-    block.render(garme);
-    gameMap.render(garme);
-    const stop = block.next(gameMap);
+    stop = block.next(gameMap);
     //触碰到底部则重新渲染block & 存入到地图
     if (stop) {
       gameMap.renderMap(block);
@@ -92,6 +112,7 @@ export function garameRun() {
       gameMap.remove();
       const gameOver = gameMap.checkOver();
       if (gameOver) {
+        handeRaf && cAF(handeRaf);
         clearInterval(timer);
         setTimeout(() => {
           alert("GAME OVER");

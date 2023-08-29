@@ -54,7 +54,7 @@ export default class Block {
     return true;
   }
 
-  next(GarmeMap: GarmeMap): Boolean {
+  next(GarmeMap: GarmeMap): boolean {
     if (this.check(GarmeMap, this.blockRow + 1, this.blockCol)) {
       this.blockRow++;
       return false;
@@ -64,7 +64,6 @@ export default class Block {
   }
 
   left(GarmeMap: GarmeMap) {
-    console.log(this.blockCol, "this.blockCol");
     if (this.check(GarmeMap, this.blockRow, this.blockCol - 1)) {
       this.blockCol--;
     }
