@@ -1,4 +1,10 @@
-import { CLASS_CELL, CLASS_BLOCK, ROW, COL } from "@/utils/config";
+import {
+  CLASS_CELL,
+  CLASS_BLOCK,
+  ROW,
+  COL,
+  UNDERBLOCK_SPEED
+} from "@/utils/config";
 import GarmeMap from "@/share/map";
 import Block from "@/share/Block";
 export default class Garme {
@@ -44,7 +50,9 @@ export default class Garme {
 }
 
 let block: Block;
-function keydownEvnet(event: any, garmeMap: GarmeMap) {
+let garmeMap: GarmeMap;
+let isBindEvent = false;
+function keydownEvnet(event: any) {
   switch (event.keyCode) {
     //left
     case 37:
@@ -67,10 +75,10 @@ function keydownEvnet(event: any, garmeMap: GarmeMap) {
   }
 }
 
-function bindEvent(garmeMap: GarmeMap) {
-  document.addEventListener("keydown", (event) => {
-    keydownEvnet(event, garmeMap);
-  });
+function bindEvent() {
+  if (isBindEvent) return;
+  document.addEventListener("keydown", keydownEvnet);
+  isBindEvent = true;
 }
 
 let rAF = (fn: FrameRequestCallback): number =>
@@ -88,9 +96,9 @@ export function garameRun() {
   let stop = false;
   const garme = new Garme();
   block = new Block();
-  const gameMap = new GarmeMap();
+  garmeMap = new GarmeMap();
   //绑定事件
-  bindEvent(gameMap);
+  bindEvent();
   run();
   function run() {
     handeRaf = rAF(() => {
@@ -99,25 +107,26 @@ export function garameRun() {
       }
       garme.clear();
       block.render(garme);
-      gameMap.render(garme);
+      garmeMap.render(garme);
       run();
     });
   }
   timer = setInterval(() => {
-    stop = block.next(gameMap);
+    stop = block.next(garmeMap);
     //触碰到底部则重新渲染block & 存入到地图
     if (stop) {
-      gameMap.renderMap(block);
+      garmeMap.renderMap(block);
       block = new Block();
-      gameMap.remove();
-      const gameOver = gameMap.checkOver();
+      garmeMap.remove();
+      const gameOver = garmeMap.checkOver();
       if (gameOver) {
         handeRaf && cAF(handeRaf);
         clearInterval(timer);
         setTimeout(() => {
           alert("GAME OVER");
+          // garameRun();
         });
       }
     }
-  }, 500);
+  }, UNDERBLOCK_SPEED);
 }
