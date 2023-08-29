@@ -50,7 +50,7 @@ export default class Garme {
 }
 
 let block: Block;
-let garmeMap: GarmeMap;
+export let garmeMap: GarmeMap;
 let isBindEvent = false;
 function keydownEvnet(event: any) {
   switch (event.keyCode) {

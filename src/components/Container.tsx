@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { CLASS_CELL, CLASS_BLOCK, ROW, COL } from "@/utils/config";
 import { garameRun } from "@/share/Garme";
 
@@ -8,7 +7,7 @@ const Container: React.FC = () => {
     garameRun();
   }, []);
   return (
-    <div className="tetris-box" style={{ width: `${40 * COL}px` }}>
+    <div className="tetris-box">
       {new Array(ROW).fill(0).map((_, x) => {
         return (
           <div
