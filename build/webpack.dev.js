@@ -22,13 +22,6 @@ module.exports = merge(baseConfig, {
         pathRewrite: { "^/api": "" },
         ws: false
       },
-      "/socket": {
-        target: "http://192.168.5.8:3000",
-        changeOrigin: true,
-        //是否跨域
-        pathRewrite: { "^/socket": "" },
-        ws: true
-      }
     }
   },
   plugins: [

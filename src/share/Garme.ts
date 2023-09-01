@@ -7,6 +7,7 @@ import {
 } from "@/utils/config";
 import GarmeMap from "@/share/map";
 import Block from "@/share/Block";
+import { sendGameOver } from "@/utils/socket";
 export default class Garme {
   row: number;
   col: number;
@@ -123,6 +124,7 @@ export function garameRun() {
         handeRaf && cAF(handeRaf);
         clearInterval(timer);
         setTimeout(() => {
+          sendGameOver();
           alert("GAME OVER");
           // garameRun();
         });
