@@ -10,6 +10,8 @@ const MESSAGE = "message";
 const USER_LIST = "user_list";
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap> | null;
+
+let userResolve: ((value: unknown) => void) | null;
 export default function () {
   if (socket) return;
   socket = socketIo(SOCKET_URL, { withCredentials: true });
@@ -17,7 +19,6 @@ export default function () {
   socket.on(CONNECTION, () => {
     console.log("%c监听客户端连接成功-connect", "color: red");
     if (!socket) return;
-    getUserList();
   });
 
   //接收消息
@@ -29,6 +30,10 @@ export default function () {
   socket.on(MESSAGE, ({ type, data }) => {
     //USER_LIST
     console.log(MESSAGE, type, data);
+    if (userResolve && type === USER_LIST) {
+      userResolve(data);
+      userResolve = null;
+    }
   });
   socket.on(DISCONNECT, () => {
     socket = null;
@@ -56,7 +61,10 @@ export function sendGameOver() {
 }
 
 //获取所以连接的用户列表
-export function getUserList() {
-  if (!socket) return;
+export function getUserList(): Promise<unknown> {
+  if (!socket) return Promise.resolve([]);
   socket.emit(SEND, { type: USER_LIST });
+  return new Promise((resolve) => {
+    userResolve = resolve;
+  });
 }

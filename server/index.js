@@ -21,6 +21,15 @@ const io = require("socket.io")(server, {
 //连接用户
 let userConnectionMap = new Map();
 
+//发送消息 single true 为指定用户
+function send({ event, type, socket, data, single = false }) {
+  let target = socket
+  if (single) {
+    target = io.to(socket.id)
+  }
+  target.emit(event, { type, data })
+}
+
 //收到的消息
 function message({ mark }) {
   console.log(mark);
@@ -40,9 +49,16 @@ function getUserList() {
 }
 
 //获取用户信息并且发出
-function sendUserList(io) {
+function sendUserList(socket) {
   const userList = getUserList();
-  io.emit(MESSAGE, { type: USER_LIST, data: userList });
+  send({
+    event: MESSAGE,
+    socket,
+    single: true,
+    type: USER_LIST,
+    data: userList
+  })
+
 }
 
 io.on("connect", (socket) => {
@@ -69,7 +85,7 @@ io.on("connect", (socket) => {
 
   // 1. 接受 user 发过来的数据
   // 2. 广播给其他的 user
-  socket.on(MESSAGE, (num) => {});
+  socket.on(MESSAGE, (num) => { });
 
   //断开连接
   socket.on(DISCONNECT, () => {
